@@ -1,0 +1,470 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 180 30% 98%;
+    --foreground: 200 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 200 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 25% 12%;
+    --primary: 175 60% 38%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 180 25% 94%;
+    --secondary-foreground: 200 30% 18%;
+    --muted: 180 20% 95%;
+    --muted-foreground: 200 12% 45%;
+    --accent: 35 80% 58%;
+    --accent-foreground: 30 50% 18%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 145 55% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 52%;
+    --warning-foreground: 30 60% 18%;
+    --border: 180 18% 88%;
+    --input: 180 18% 90%;
+    --ring: 175 60% 38%;
+    --radius: 0.75rem;
+  }
+  .dark {
+    --background: 200 28% 8%;
+    --foreground: 180 15% 92%;
+    --card: 200 24% 11%;
+    --card-foreground: 180 15% 92%;
+    --popover: 200 24% 11%;
+    --popover-foreground: 180 15% 92%;
+    --primary: 175 55% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 20% 16%;
+    --secondary-foreground: 180 15% 88%;
+    --muted: 200 18% 14%;
+    --muted-foreground: 180 10% 58%;
+    --accent: 35 75% 55%;
+    --accent-foreground: 30 50% 15%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 145 50% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 85% 48%;
+    --warning-foreground: 30 60% 15%;
+    --border: 200 18% 20%;
+    --input: 200 18% 18%;
+    --ring: 175 55% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv01";
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float-soft {
+  animation: float-soft 4s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  70% { transform: scale(1.1); opacity: 0; }
+  100% { transform: scale(0.95); opacity: 0; }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--secondary)) 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 1.8s ease-in-out infinite;
+}
+
+/* --- Walking pet on grass --- */
+@keyframes pet-bob {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-3px); }
+  75% { transform: translateY(-2px); }
+}
+@keyframes pet-leg-front {
+  0%, 100% { transform: rotate(-30deg); }
+  50% { transform: rotate(30deg); }
+}
+@keyframes pet-leg-back {
+  0%, 100% { transform: rotate(30deg); }
+  50% { transform: rotate(-30deg); }
+}
+@keyframes tail-wag {
+  0%, 100% { transform: rotate(-18deg); }
+  50% { transform: rotate(22deg); }
+}
+@keyframes grass-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes ground-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-40px); }
+}
+
+.walk-scene {
+  position: relative;
+  width: 200px;
+  height: 160px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.walk-ground {
+  position: absolute;
+  bottom: 0;
+  left: -40px;
+  right: -40px;
+  height: 36px;
+  background: linear-gradient(to bottom, hsl(110 45% 52%), hsl(120 40% 42%));
+  border-radius: 50% 50% 0 0 / 24px 24px 0 0;
+}
+.walk-ground::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 18px,
+    hsl(120 40% 38%) 18px,
+    hsl(120 40% 38%) 20px
+  );
+  animation: ground-scroll 0.7s linear infinite;
+}
+.walk-grass {
+  position: absolute;
+  bottom: 28px;
+  width: 4px;
+  height: 14px;
+  background: hsl(115 50% 45%);
+  border-radius: 50% 50% 0 0;
+  transform-origin: bottom center;
+  animation: grass-sway 1.6s ease-in-out infinite;
+}
+.walk-pet {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 56px;
+  animation: pet-bob 0.7s ease-in-out infinite;
+}
+
+/* shared body parts */
+.pet-body {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+}
+.pet-head {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
+}
+.pet-ear {
+  position: absolute;
+  z-index: 2;
+}
+.pet-leg {
+  position: absolute;
+  border-radius: 4px;
+  transform-origin: top center;
+  z-index: 0;
+}
+.pet-tail {
+  position: absolute;
+  border-radius: 6px;
+  transform-origin: bottom center;
+  z-index: 0;
+  animation: tail-wag 0.5s ease-in-out infinite;
+}
+.pet-eye {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  z-index: 3;
+}
+.pet-nose {
+  position: absolute;
+  width: 4px;
+  height: 3px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  z-index: 3;
+}
+
+/* === CAT === */
+.pet-cat .pet-body {
+  width: 34px; height: 22px;
+  background: hsl(28 60% 65%);
+  top: 20px; left: 8px;
+}
+.pet-cat .pet-head {
+  width: 22px; height: 20px;
+  background: hsl(28 60% 65%);
+  top: 10px; left: 30px;
+}
+.pet-cat .pet-ear {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 9px solid hsl(28 55% 58%);
+}
+.pet-cat .pet-ear.left { top: 2px; left: 32px; transform: rotate(-15deg); }
+.pet-cat .pet-ear.right { top: 2px; left: 42px; transform: rotate(15deg); }
+.pet-cat .pet-eye.left { top: 17px; left: 36px; }
+.pet-cat .pet-eye.right { top: 17px; left: 43px; }
+.pet-cat .pet-nose { top: 23px; left: 40px; }
+.pet-cat .pet-tail {
+  width: 5px; height: 22px;
+  background: hsl(28 55% 58%);
+  top: 14px; left: 0px;
+  border-radius: 6px 6px 50% 50%;
+  animation-duration: 0.6s;
+}
+.pet-cat .pet-leg {
+  width: 5px; height: 16px;
+  background: hsl(28 50% 55%);
+  top: 38px;
+}
+.pet-cat .pet-leg.l1 { left: 12px; animation: pet-leg-front 0.7s ease-in-out infinite; }
+.pet-cat .pet-leg.l2 { left: 20px; animation: pet-leg-back 0.7s ease-in-out infinite; }
+.pet-cat .pet-leg.l3 { left: 30px; animation: pet-leg-back 0.7s ease-in-out infinite; }
+.pet-cat .pet-leg.l4 { left: 38px; animation: pet-leg-front 0.7s ease-in-out infinite; }
+
+/* === DOG === */
+.pet-dog .pet-body {
+  width: 36px; height: 24px;
+  background: hsl(25 70% 50%);
+  top: 18px; left: 8px;
+}
+.pet-dog .pet-head {
+  width: 24px; height: 22px;
+  background: hsl(25 70% 50%);
+  top: 8px; left: 30px;
+}
+.pet-dog .pet-ear {
+  width: 9px; height: 14px;
+  background: hsl(20 65% 42%);
+  border-radius: 50% 50% 40% 40%;
+}
+.pet-dog .pet-ear.left { top: 4px; left: 29px; transform: rotate(-20deg); }
+.pet-dog .pet-ear.right { top: 4px; left: 44px; transform: rotate(20deg); }
+.pet-dog .pet-eye.left { top: 15px; left: 37px; }
+.pet-dog .pet-eye.right { top: 15px; left: 45px; }
+.pet-dog .pet-nose { top: 22px; left: 42px; width: 5px; height: 4px; }
+.pet-dog .pet-tail {
+  width: 6px; height: 20px;
+  background: hsl(25 65% 45%);
+  top: 12px; left: 1px;
+  border-radius: 50% 50% 6px 6px;
+}
+.pet-dog .pet-leg {
+  width: 6px; height: 18px;
+  background: hsl(25 60% 42%);
+  top: 38px;
+}
+.pet-dog .pet-leg.l1 { left: 12px; animation: pet-leg-front 0.7s ease-in-out infinite; }
+.pet-dog .pet-leg.l2 { left: 20px; animation: pet-leg-back 0.7s ease-in-out infinite; }
+.pet-dog .pet-leg.l3 { left: 30px; animation: pet-leg-back 0.7s ease-in-out infinite; }
+.pet-dog .pet-leg.l4 { left: 38px; animation: pet-leg-front 0.7s ease-in-out infinite; }
+
+/* === MOUSE === */
+.pet-mouse .pet-body {
+  width: 30px; height: 20px;
+  background: hsl(0 0% 75%);
+  top: 22px; left: 10px;
+}
+.pet-mouse .pet-head {
+  width: 20px; height: 18px;
+  background: hsl(0 0% 75%);
+  top: 14px; left: 32px;
+}
+.pet-mouse .pet-ear {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: hsl(0 0% 82%);
+  border: 1.5px solid hsl(0 0% 65%);
+}
+.pet-mouse .pet-ear.left { top: 6px; left: 33px; }
+.pet-mouse .pet-ear.right { top: 6px; left: 43px; }
+.pet-mouse .pet-eye.left { top: 20px; left: 38px; }
+.pet-mouse .pet-eye.right { top: 20px; left: 44px; }
+.pet-mouse .pet-nose { top: 26px; left: 48px; background: hsl(350 60% 55%); }
+.pet-mouse .pet-tail {
+  width: 3px; height: 24px;
+  background: hsl(0 0% 70%);
+  top: 16px; left: 4px;
+  border-radius: 50%;
+  animation-duration: 0.4s;
+}
+.pet-mouse .pet-leg {
+  width: 4px; height: 14px;
+  background: hsl(0 0% 65%);
+  top: 38px;
+}
+.pet-mouse .pet-leg.l1 { left: 14px; animation: pet-leg-front 0.5s ease-in-out infinite; }
+.pet-mouse .pet-leg.l2 { left: 20px; animation: pet-leg-back 0.5s ease-in-out infinite; }
+.pet-mouse .pet-leg.l3 { left: 28px; animation: pet-leg-back 0.5s ease-in-out infinite; }
+.pet-mouse .pet-leg.l4 { left: 34px; animation: pet-leg-front 0.5s ease-in-out infinite; }
+
+.prose-vet h1 { @apply text-xl font-bold mt-4 mb-2; }
+.prose-vet h2 { @apply text-lg font-semibold mt-4 mb-2; }
+.prose-vet h3 { @apply text-base font-semibold mt-3 mb-1; }
+.prose-vet p { @apply my-2 leading-relaxed; }
+.prose-vet ul { @apply list-disc pl-5 my-2 space-y-1; }
+.prose-vet ol { @apply list-decimal pl-5 my-2 space-y-1; }
+.prose-vet strong { @apply font-semibold text-foreground; }
+.prose-vet code { @apply bg-muted px-1.5 py-0.5 rounded text-sm; }
+.prose-vet blockquote { @apply border-l-4 border-primary/40 pl-3 italic text-muted-foreground my-2; }
+
+/* --- Skeleton loading --- */
+.skeleton {
+  @apply rounded-2xl bg-muted animate-shimmer;
+}
+
+/* --- Tab indicator --- */
+.tab-active {
+  @apply text-primary border-b-2 border-primary;
+}
+.tab-inactive {
+  @apply text-muted-foreground border-b-2 border-transparent hover:text-foreground;
+}
+
+/* --- Badge gradient --- */
+.badge-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(175 55% 30%));
+}
+
+/* --- Scrollbar styling --- */
+.styled-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.styled-scroll::-webkit-scrollbar-track { background: transparent; }
+.styled-scroll::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
+.styled-scroll::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+/* --- Premium banner --- */
+.premium-banner {
+  background: linear-gradient(135deg, hsl(175 60% 38% / 0.08), hsl(35 80% 58% / 0.08));
+  border: 1px solid hsl(var(--primary) / 0.2);
+}
+
+/* --- Diagram styles --- */
+.diagram-stroke {
+  stroke: hsl(var(--foreground));
+  fill: none;
+  stroke-width: 1.5;
+}
+.diagram-fill-primary {
+  fill: hsl(var(--primary) / 0.15);
+  stroke: hsl(var(--primary));
+  stroke-width: 1.5;
+}
+.diagram-fill-warning {
+  fill: hsl(var(--warning) / 0.15);
+  stroke: hsl(var(--warning));
+  stroke-width: 1.5;
+}
+.diagram-fill-danger {
+  fill: hsl(var(--destructive) / 0.15);
+  stroke: hsl(var(--destructive));
+  stroke-width: 1.5;
+}
+.diagram-text {
+  fill: hsl(var(--foreground));
+  font-size: 11px;
+  font-weight: 500;
+}
+.diagram-label {
+  fill: hsl(var(--muted-foreground));
+  font-size: 10px;
+}
+
+/* --- Streak fire animation --- */
+@keyframes flame-flicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50% { transform: scale(1.08) rotate(2deg); }
+}
+.animate-flame {
+  animation: flame-flicker 1.2s ease-in-out infinite;
+}
+
+/* --- Achievement pop --- */
+@keyframes badge-pop {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.animate-badge-pop {
+  animation: badge-pop 0.5s ease-out both;
+}
+
+/* --- Slide in from right --- */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out both;
+}
+
+/* --- Toast --- */
+@keyframes toast-in {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-toast-in {
+  animation: toast-in 0.3s ease-out both;
+}

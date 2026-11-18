@@ -1,0 +1,16 @@
+{
+  "name": "Mini Veterinarian",
+  "short_name": "Mini Vet",
+  "description": "宠物智能问诊助手",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0fdfa",
+  "theme_color": "#0d9488",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
